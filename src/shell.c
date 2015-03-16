@@ -39,7 +39,29 @@ cmdlist cl[]={
 	MKCL(test, "test new function"),
 	MKCL(, ""),
 };
+int toString(char inputString[]) {
+  int i, sign, offset, n = 0;
+ 
+  if (inputString[0] == '-') {  
+    sign = -1;
+  }
+ 
+  if (sign == -1) {  
+    offset = 1;
+  }
+  else {
+    offset = 0;
+  } 
+  for (i = offset; inputString[i] != '\0'; i++) {
 
+    n = n * 10 + inputString[i] - 48;
+
+  } 
+  if (sign == -1) {
+    n = -n;
+  } 
+  return n;  
+}
 int parse_command(char *str, char *argv[]){
 	int b_quote=0, b_dbquote=0;
 	int i;
@@ -165,6 +187,15 @@ void test_command(int n, char *argv[]) {
     int error;
     /* Hello Meassage for test command */
     fio_printf(1, "Hello!Test!\r\n");
+
+    if(n == 1){
+        fio_printf(2, "\rUsage: test <number>\r\n");
+    }
+    else if(n == 2){
+	fio_printf(1, "\r%d\r\n",toString(argv[1])+5);
+    }
+    else{
+    }
     
     handle = host_action(SYS_SYSTEM, "mkdir -p output");
     handle = host_action(SYS_SYSTEM, "touch output/syslog");
