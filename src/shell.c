@@ -163,8 +163,8 @@ void help_command(int n,char *argv[]){
 void test_command(int n, char *argv[]) {
     int handle;
     int error;
-
-    fio_printf(1, "\r\n");
+    /* Hello Meassage for test command */
+    fio_printf(1, "Hello!Test!\r\n");
     
     handle = host_action(SYS_SYSTEM, "mkdir -p output");
     handle = host_action(SYS_SYSTEM, "touch output/syslog");
