@@ -91,7 +91,7 @@ void command_prompt(void *pvParameters)
 	char *argv[20];
     char hint[] = USER_NAME "@" USER_NAME "-STM32:~$ ";
 
-	fio_printf(1, "\rWelcome to FreeRTOS Shell\r\n");
+	fio_printf(1, "\rWelcome to FreeRTOS Shell! for Lab 39\r\n");
 	while(1){
                 fio_printf(1, "%s", hint);
 		fio_read(0, buf, 127);
