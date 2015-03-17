@@ -40,7 +40,7 @@ cmdlist cl[]={
 	MKCL(, ""),
 };
 /* string to integer */
-int toString(char inputString[]) {
+int stringToInt(char inputString[]) {
     int i, sign, offset, n = 0;
     if (inputString[0] == '-') {  
         sign = -1;
@@ -66,6 +66,21 @@ int fib(int n){
     }
     else{
         return fib(n - 1)  + fib(n - 2);
+    }
+}
+/* is prime */
+int isPrime(int n){
+    int flag = 0;		// if flag == 0, n is prime
+    for(int i = 2; i < n ;i++){
+	if(n % i == 0){
+	    flag++;
+        }
+    }
+    if(flag == 0){
+	return 1;
+    }
+    else{
+	return 0;
     }
 }
   
@@ -200,7 +215,11 @@ void test_command(int n, char *argv[]) {
     }
     else if(n == 2){
 	
-	fio_printf(1, "\r%d\r\n",fib(toString(argv[1])));
+	//fio_printf(1, "\r%d\r\n",fib(toString(argv[1])));
+        if(isPrime(stringToInt(argv[1])) == 0)
+	    fio_printf(1, "\r%s is NOT prime number!\r\n",argv[1]);
+        else
+	    fio_printf(1, "\r%s is prime number!\r\n",argv[1]);
     }
     else{
         fio_printf(2, "Too many argument!\r\n");
