@@ -210,16 +210,24 @@ void test_command(int n, char *argv[]) {
     /* Hello Meassage for test command */
     fio_printf(1, "Hello!Test!\r\n");
 
-    if(n == 1){
-        fio_printf(2, "\rUsage: test <number>\r\n");
+    if(n == 1 || n == 2){
+        fio_printf(2, "\rUsage: test <options> <number>\r\n");
+        fio_printf(2, "\roptions : 0 for fibonacci, 1 for isPrime.\r\n");
     }
-    else if(n == 2){
-	
-	//fio_printf(1, "\r%d\r\n",fib(toString(argv[1])));
-        if(isPrime(stringToInt(argv[1])) == 0)
-	    fio_printf(1, "\r%s is NOT prime number!\r\n",argv[1]);
-        else
-	    fio_printf(1, "\r%s is prime number!\r\n",argv[1]);
+    else if(n == 3){
+	if(stringToInt(argv[1]) == 0)
+	    fio_printf(1, "\r%d\r\n",fib(stringToInt(argv[2])));
+        else if (stringToInt(argv[1]) == 1){
+            if(isPrime(stringToInt(argv[2])) == 0)
+	        fio_printf(1, "\r%s is NOT prime number!\r\n",argv[2]);
+            else
+	        fio_printf(1, "\r%s is prime number!\r\n",argv[2]);
+        }
+        else{
+            fio_printf(2, "\rError!\r\n");
+            fio_printf(2, "\rUsage: test <options> <number>\r\n");
+            fio_printf(2, "\roptions : 0 for fibonacci, 1 for isPrime.\r\n");
+        }
     }
     else{
         fio_printf(2, "Too many argument!\r\n");
