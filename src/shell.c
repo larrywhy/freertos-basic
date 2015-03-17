@@ -39,29 +39,36 @@ cmdlist cl[]={
 	MKCL(test, "test new function"),
 	MKCL(, ""),
 };
+/* string to integer */
 int toString(char inputString[]) {
-  int i, sign, offset, n = 0;
- 
-  if (inputString[0] == '-') {  
-    sign = -1;
-  }
- 
-  if (sign == -1) {  
-    offset = 1;
-  }
-  else {
-    offset = 0;
-  } 
-  for (i = offset; inputString[i] != '\0'; i++) {
-
-    n = n * 10 + inputString[i] - 48;
-
-  } 
-  if (sign == -1) {
-    n = -n;
-  } 
-  return n;  
+    int i, sign, offset, n = 0;
+    if (inputString[0] == '-') {  
+        sign = -1;
+    }
+    if (sign == -1) {  
+        offset = 1;
+    }
+    else {
+        offset = 0;
+    } 
+    for (i = offset; inputString[i] != '\0'; i++) {
+        n = n * 10 + inputString[i] - 48;
+    } 
+    if (sign == -1) {
+        n = -n;
+    } 
+    return n;  
 }
+/* fibonacci */
+int fib(int n){
+    if(n == 0 || n == 1){
+        return n;
+    }
+    else{
+        return fib(n - 1)  + fib(n - 2);
+    }
+}
+  
 int parse_command(char *str, char *argv[]){
 	int b_quote=0, b_dbquote=0;
 	int i;
@@ -192,9 +199,11 @@ void test_command(int n, char *argv[]) {
         fio_printf(2, "\rUsage: test <number>\r\n");
     }
     else if(n == 2){
-	fio_printf(1, "\r%d\r\n",toString(argv[1])+5);
+	
+	fio_printf(1, "\r%d\r\n",fib(toString(argv[1])));
     }
     else{
+        fio_printf(2, "Too many argument!\r\n");
     }
     
     handle = host_action(SYS_SYSTEM, "mkdir -p output");
