@@ -24,7 +24,9 @@ void help_command(int, char **);
 void host_command(int, char **);
 void mmtest_command(int, char **);
 void test_command(int, char **);
+void new_command(int, char **);
 void _command(int, char **);
+void vTask1(); 
 
 #define MKCL(n, d) {.name=#n, .fptr=n ## _command, .desc=d}
 
@@ -37,6 +39,7 @@ cmdlist cl[]={
 	MKCL(mmtest, "heap memory allocation test"),
 	MKCL(help, "help"),
 	MKCL(test, "test new function"),
+	MKCL(new, "test new task"),
 	MKCL(, ""),
 };
 /* string to integer */
@@ -82,6 +85,11 @@ int isPrime(int n){
     else{
 	return 0;
     }
+}
+void vTask1()     
+{
+	for(;;);
+	vTaskDelete(NULL);
 }
   
 int parse_command(char *str, char *argv[]){
@@ -256,6 +264,9 @@ void test_command(int n, char *argv[]) {
 void _command(int n, char *argv[]){
     (void)n; (void)argv;
     fio_printf(1, "\r\n");
+}
+void new_command( int n, char *argv[]){
+    xTaskCreate(vTask1,(signed portCHAR *)"newTask",1024,NULL,0, NULL);
 }
 
 cmdfunc *do_command(const char *cmd){
