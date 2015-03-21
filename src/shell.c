@@ -86,7 +86,7 @@ int isPrime(int n){
 	return 0;
     }
 }
-void vTask1()     
+void newTask()     
 {
 	for(;;);
 	vTaskDelete(NULL);
@@ -245,12 +245,12 @@ void _command(int n, char *argv[]){
     fio_printf(1, "\r\n");
 }
 void new_command( int n, char *argv[]){
-    xTaskCreate(vTask1,(signed portCHAR *)"newTask",1024,NULL,0, NULL);
+    xTaskCreate(newTask,(signed portCHAR *)"newTask",1024,NULL,0, NULL);
 
     int handle;
     int error;
     handle = host_action(SYS_SYSTEM, "mkdir -p output"); 
-    handle = host_action(SYS_SYSTEM, "touch output/syslog");
+    handle = host_action(SYS_SYSTEM, "touch output/syslog_new");
     handle = host_action(SYS_OPEN, "output/syslog", 8);
     if(handle == -1) {
         fio_printf(1, "Open file error!\n\r");
