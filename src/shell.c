@@ -213,8 +213,6 @@ void help_command(int n,char *argv[]){
 }
 
 void test_command(int n, char *argv[]) {
-    int handle;
-    int error;
     /* Hello Meassage for test command */
     fio_printf(1, "Hello!Test!\r\n");
 
@@ -240,25 +238,6 @@ void test_command(int n, char *argv[]) {
     else{
         fio_printf(2, "Too many argument!\r\n");
     }
-    
-    handle = host_action(SYS_SYSTEM, "mkdir -p output");
-    handle = host_action(SYS_SYSTEM, "touch output/syslog");
-
-    handle = host_action(SYS_OPEN, "output/syslog", 8);
-    if(handle == -1) {
-        fio_printf(1, "Open file error!\n\r");
-        return;
-    }
-
-    char *buffer = "Test host_write function which can write data to output/syslog\n";
-    error = host_action(SYS_WRITE, handle, (void *)buffer, strlen(buffer));
-    if(error != 0) {
-        fio_printf(1, "Write file error! Remain %d bytes didn't write in the file.\n\r", error);
-        host_action(SYS_CLOSE, handle);
-        return;
-    }
-
-    host_action(SYS_CLOSE, handle);
 }
 
 void _command(int n, char *argv[]){
@@ -267,6 +246,30 @@ void _command(int n, char *argv[]){
 }
 void new_command( int n, char *argv[]){
     xTaskCreate(vTask1,(signed portCHAR *)"newTask",1024,NULL,0, NULL);
+
+    int handle;
+    int error;
+    handle = host_action(SYS_SYSTEM, "mkdir -p output"); 
+    handle = host_action(SYS_SYSTEM, "touch output/syslog");
+    handle = host_action(SYS_OPEN, "output/syslog", 8);
+    if(handle == -1) {
+        fio_printf(1, "Open file error!\n\r");
+    return;
+    }
+    char *buffer = "\n\rName State Priority Stack Num\n\r\n";
+    error = host_action(SYS_WRITE, handle, (void *)buffer, strlen(buffer));
+    char *buffer_line =  "*******************************************\n\r";
+    error = host_action(SYS_WRITE, handle, (void *)buffer_line, strlen(buffer_line));
+    char buff[1024];
+    vTaskList((signed char *)buff);
+    error = host_action(SYS_WRITE, handle, (void *)buff, strlen(buff));
+    if(error != 0) {
+        fio_printf(1, "Write file error! Remain %d bytes didn't write in the file.\n\r", error);
+    host_action(SYS_CLOSE, handle);
+    return;
+
+    }
+    host_action(SYS_CLOSE, handle);
 }
 
 cmdfunc *do_command(const char *cmd){
