@@ -74,7 +74,7 @@ int fib(int n){
 /* is prime */
 int isPrime(int n){
     int flag = 0;		// if flag == 0, n is prime
-    for(int i = 2; i < n ;i++){
+    for(int i = 2; i * i < n ;i++){
 	if(n % i == 0){
 	    flag++;
         }
