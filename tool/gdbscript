@@ -1,6 +1,7 @@
 file build/main.elf
 target remote :3333
 
-b main
-
+b shell.c:157
+display ps_command::buf
+info display
 c
