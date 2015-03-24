@@ -154,7 +154,7 @@ void ps_command(int n, char *argv[]){
 	vTaskList(buf);
         fio_printf(1, "\n\rName          State   Priority  Stack  Num\n\r");
         fio_printf(1, "*******************************************\n\r");
-	fio_printf(1, "%s\r\n", buf + 2);	
+	fio_printf(1, "%s\r", buf + 2);	
 }
 
 void cat_command(int n, char *argv[]){
@@ -245,7 +245,10 @@ void _command(int n, char *argv[]){
     fio_printf(1, "\r\n");
 }
 void new_command( int n, char *argv[]){
-    xTaskCreate(newTask,(signed portCHAR *)"newTask",1024,NULL,0, NULL);
+
+	fio_printf(1, "\r\n");
+        xTaskCreate(newTask,(signed portCHAR *)argv[1],100,NULL,0, NULL);
+       // xTaskCreate(newTask,(signed portCHAR *)argv[1],1024,NULL,0, NULL);
 
     int handle;
     int error;
