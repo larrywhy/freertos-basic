@@ -86,9 +86,14 @@ int isPrime(int n){
 	return 0;
     }
 }
-void newTask()     
+void newTask(void *pvParameters)     
 {
-	for(;;);
+	
+	int *pcTask = (int *)pvParameters;
+	for(;;){
+            fio_printf(1, "\n\r[%d] is running!..\r\n",pcTask);
+	    vTaskDelay(1000/portTICK_RATE_MS);
+	}
 	vTaskDelete(NULL);
 }
   
@@ -245,9 +250,10 @@ void _command(int n, char *argv[]){
     fio_printf(1, "\r\n");
 }
 void new_command( int n, char *argv[]){
-
+    static int task_count = 1;  // begin -> 1
 	fio_printf(1, "\r\n");
-        xTaskCreate(newTask,(signed portCHAR *)argv[1],100,NULL,0, NULL);
+        xTaskCreate(newTask,(signed portCHAR *)"newTask",100,(void*)task_count,0, NULL);
+    task_count++;
        // xTaskCreate(newTask,(signed portCHAR *)argv[1],1024,NULL,0, NULL);
 
     int handle;
