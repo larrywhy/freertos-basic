@@ -92,7 +92,7 @@ void newTask(void *pvParameters)
 	int *pcTask = (int *)pvParameters;
 	for(;;){
             fio_printf(1, "\n\r[%d] is running!..\r\n",pcTask);
-	    vTaskDelay(1000/portTICK_RATE_MS);
+	    vTaskDelay(1000/portTICK_RATE_MS); 
 	}
 	vTaskDelete(NULL);
 }
@@ -250,35 +250,10 @@ void _command(int n, char *argv[]){
     fio_printf(1, "\r\n");
 }
 void new_command( int n, char *argv[]){
-    static int task_count = 1;  // begin -> 1
+    	static int task_count = 1;  // begin -> 1
 	fio_printf(1, "\r\n");
-        xTaskCreate(newTask,(signed portCHAR *)"newTask",100,(void*)task_count,0, NULL);
-    task_count++;
-       // xTaskCreate(newTask,(signed portCHAR *)argv[1],1024,NULL,0, NULL);
-
-    int handle;
-    int error;
-    handle = host_action(SYS_SYSTEM, "mkdir -p output"); 
-    handle = host_action(SYS_SYSTEM, "touch output/syslog_new");
-    handle = host_action(SYS_OPEN, "output/syslog", 8);
-    if(handle == -1) {
-        fio_printf(1, "Open file error!\n\r");
-    return;
-    }
-    char *buffer = "\n\rName State Priority Stack Num\n\r\n";
-    error = host_action(SYS_WRITE, handle, (void *)buffer, strlen(buffer));
-    char *buffer_line =  "*******************************************\n\r";
-    error = host_action(SYS_WRITE, handle, (void *)buffer_line, strlen(buffer_line));
-    char buff[1024];
-    vTaskList((signed char *)buff);
-    error = host_action(SYS_WRITE, handle, (void *)buff, strlen(buff));
-    if(error != 0) {
-        fio_printf(1, "Write file error! Remain %d bytes didn't write in the file.\n\r", error);
-    host_action(SYS_CLOSE, handle);
-    return;
-
-    }
-    host_action(SYS_CLOSE, handle);
+	xTaskCreate(newTask,(signed portCHAR *)"newTask",100,(void*)task_count,5, NULL);
+    	task_count++;
 }
 
 cmdfunc *do_command(const char *cmd){
